@@ -4,32 +4,26 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class decryptionFile
-{
-    public static void main(String[] args) throws IOException
-    {
+public class decryptionFile {
+    public static void main(String[] args) throws IOException {
         String text = "";
         String text2 = "";
 
 
         Scanner input = new Scanner(new File("cipher.txt"));
 
-        while(input.hasNext())
-        {
+        while (input.hasNext()) {
             text = input.nextLine().toLowerCase();
             text2 = input.nextLine().toLowerCase();
 
         }
-        System.out.println("Ciphertext 1 : " + text );
+        System.out.println("Ciphertext 1 : " + text);
         System.out.println("Ciphertext 2 : " + text2);
 
+
         char[] decryption = text.toCharArray();
-        System.out.println();
-        System.out.println("Cipher text 1 : ");
-        System.out.print(decryption);
 
-
-        System.out.println("\n\nPlain text 1 : ");
+        System.out.println("\n\nQ1 : ");
         for(char cipher: decryption)
         {
             if(cipher =='a' || cipher == 'b' || cipher =='c')
@@ -44,30 +38,79 @@ public class decryptionFile
             System.out.print(cipher);
 
         }
+
+
+
+
+
+
         char[] decryption2 = text2.toCharArray();
-        System.out.println();
-        System.out.println();
-        System.out.println("\nCipher text 2 : ");
-        System.out.println(decryption2);
+        System.out.println("\n\nQ2 : ");
 
-        System.out.println("\nPlain text 2 : ");
-        for(char cipher2: decryption2)
+        String[] Alphabet = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
+                "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"};
+
+
+        int counter = 1;
+        int shift = 0;
+        String plainText2 = "";
+        int forwardShift;
+        int backwardShift;
+
+
+        while( !(plainText2.contains("done")) && counter < 25)
         {
-            if(cipher2 =='x' || cipher2=='y' || cipher2 =='z' ||cipher2 =='w' || cipher2=='s' || cipher2 =='t' || cipher2=='v' || cipher2=='u')
-            {
-                cipher2 -=19;
 
-            }
-            else if(cipher2 !=' ')
+            shift++;
+            plainText2 = "";
+
+            for (int i = 0; i < decryption2.length; i++)
             {
-                cipher2 +=7;
+
+                    char temp = decryption2[i];
+                    String x = Character.toString(temp);
+
+                    int position = linearSearch(Alphabet, x);
+
+                    forwardShift = shift;
+                    backwardShift = (Alphabet.length - 1) - shift;
+
+
+                        if(position >= backwardShift)
+                        {
+                            String s = Alphabet[position - backwardShift];
+                            plainText2 = plainText2 + s;
+                        }
+                            else if (temp != ' ')
+                            {
+                                String s = Alphabet[position + (forwardShift + 1)];
+                                plainText2 = plainText2 + s;
+                            }
+                                else
+                                {
+                                    plainText2 = plainText2 + " ";
+                                }
             }
-            System.out.print(cipher2);
+            counter++;
         }
 
+
+        System.out.println("The shift used in this cipher is positive : " + counter +
+                            "\nAlternatively, The shift used in this cipher can be interpretted as negative : " + (Alphabet.length - counter) +
+                            "\n\nPLAIN TEXT : " + plainText2);
     }
 
 
+    public static int linearSearch(String[] arr, String key){
+        for(int i=0;i<arr.length;i++){
+            if(arr[i].equals(key)){
+                return i;
+            }
+        }
+        return -1;
+    }
 
 
 }
+
+
