@@ -64,6 +64,7 @@ public class decryptionFile {
                 char temp = decryption2[i];
                 String x = Character.toString(temp);
 
+
                 int position = linearSearch(Alphabet, x);
 
                 forwardShift = shift;
