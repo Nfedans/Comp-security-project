@@ -12,6 +12,7 @@ public class App {
         String text = "";
         String text2 = "";
 
+        // get input from external file, using exception handling
         try (
                 Scanner input = new Scanner(new File("cipher.txt"));
         ) {
@@ -27,116 +28,87 @@ public class App {
             System.out.println("Sorry, we could not read a number from the file");
         }
 
-
-
         boolean quit = false;
 
         // Greeting and entry screen
 
+        // this is the major while loop which houses the menu
         while (quit != true) {
+
 
             System.out.println("\n\n\n\n                   ----------     ---  The Code Breaker App™  ---     ----------");
             Scanner keyboard = new Scanner(System.in);
-            String action = "";
-            int method = 0;
-            int endChoice = 0;
+            String appEntry = "";
+            int decipherChoice = 0;
+            int menuChoice = 0;
             boolean sentinel = false;
 
 
-        while (!(action.equals("e")) && !(action.equals("x"))) {
+        while (!(appEntry.equals("e")) && !(appEntry.equals("x"))) {
             System.out.println("\n\n                             Click E to enter    |    Click X to quit              ");
 
 
-            action = keyboard.nextLine();
-            action.toLowerCase();
+            appEntry = keyboard.nextLine();
+            appEntry.toLowerCase();
         }
 
-        if (action.equals("e")) {
+        // you will enter here if you choose to enter the app
+        if (appEntry.equals("e")) {
 
-            while(sentinel == false){
-            while(method != 1 && method != 2) {
-                System.out.println("\nPlease enter 1 to view how ciphertext with a key of 3 is cracked");
+                while(sentinel == false){
 
-                System.out.println("\nPlease enter 2 to view how ciphertext without a know key, was cracked using bruteforce");
+                    decipherChoice = decryptionFile.handlePlainTextOption();
 
-                method = keyboard.nextInt();
-
-
-            }
-
-
-            if(method == 1) {
-                System.out.println("This is the answer to the first question : " + decryptionFile.firstQuestion(text));
-
-                while(endChoice != 1 && endChoice!= 2 && endChoice!= 3) {
-                    System.out.println("\nPlease enter 1 to return to options");
-
-                    System.out.println("\nPlease enter 2 to return to start");
-
-                    System.out.println("\nPlease enter 3 to quit the application");
-
-
-
-                    try{endChoice = keyboard.nextInt();}
-                    catch (InputMismatchException e) {
-                        System.out.println("Please enter a valid choice");
-                        endChoice = 0;
-                    }
-
-
-                }
-                if(endChoice == 1)
+                    // if you choose to view the answer to the first question you will enter here
+                if(decipherChoice == 1)
                 {
-                    endChoice = 0;
-                    method = 0;
+                        // firstQuestion() houses the algorithm for the known caesar cipher
+                        System.out.println("This is the answer to the first question : " + decryptionFile.firstQuestionReDone(text));
+                        // handleMenu() handles and does the exception handling for the deepest menu
+                        menuChoice = decryptionFile.handleMenu();
+
+                        if(menuChoice == 1)
+                        {
+                            // will simply give you the 2 options to view the deciphered code
+                        }
+                        else if(menuChoice == 2)
+                        {
+                            // will take you back to the start of the app
+                            sentinel = true;
+                        }
+                        else
+                        {
+                            // will quit the app and end the program
+                            sentinel = true;
+                            quit = true;
+                        }
+
                 }
-                else if(endChoice == 2)
-                {
-                    sentinel = true;
-                }
+                // if you choose to view the answer to the second question you will enter here
                 else
                 {
-                    sentinel = true;
-                    quit = true;
-                }
+                        // secondQuestion() houses the algorithm which brute forces the unknown caesar cipher
+                        System.out.println("\nThis is the answer to the second question : " + decryptionFile.secondQuestion(text2));
+                        menuChoice = decryptionFile.handleMenu();
 
-            }
-            else {
-                System.out.println("\nThis is the answer to the second question : " + decryptionFile.secondQuestion(text2));
-
-                while(endChoice != 1 && endChoice!= 2 && endChoice!= 3) {
-                    System.out.println("\nPlease enter 1 to return to options");
-
-                    System.out.println("\nPlease enter 2 to return to start");
-
-                    System.out.println("\nPlease enter 3 to quit the application");
-
-                    try{endChoice = keyboard.nextInt();}
-                    catch (InputMismatchException e) {
-                        System.out.println("Please enter a valid choice");
-                        endChoice = 0;
-                    }
+                        if(menuChoice == 1)
+                        {
+                        }
+                        else if(menuChoice == 2)
+                        {
+                            sentinel = true;
+                        }
+                        else
+                        {
+                            sentinel = true;
+                            quit = true;
+                        }
 
                 }
-                if(endChoice == 1)
-                {
-                    endChoice = 0;
-                    method = 0;
                 }
-                else if(endChoice == 2)
-                {
-                    sentinel = true;
-                }
-                else
-                {
-                    sentinel = true;
-                    quit = true;
-                }
-
-            }
-            }
 
         }
+        // if you choose not to enter at the start, you will be taken here, and out of the menu system.
         else
         {
             quit = true;
